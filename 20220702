@@ -1,0 +1,82 @@
+# 1단계 new_id의 모든 대문자를 대응되는 소문자로 치환합니다.
+# 2단계 new_id에서 알파벳 소문자, 숫자, 빼기(-), 밑줄(_), 마침표(.)를 제외한 모든 문자를 제거합니다.
+# 3단계 new_id에서 마침표(.)가 2번 이상 연속된 부분을 하나의 마침표(.)로 치환합니다.
+# 4단계 new_id에서 마침표(.)가 처음이나 끝에 위치한다면 제거합니다.
+# 5단계 new_id가 빈 문자열이라면, new_id에 "a"를 대입합니다.
+# 6단계 new_id의 길이가 16자 이상이면, new_id의 첫 15개의 문자를 제외한 나머지 문자들을 모두 제거합니다.
+#      만약 제거 후 마침표(.)가 new_id의 끝에 위치한다면 끝에 위치한 마침표(.) 문자를 제거합니다.
+# 7단계 new_id의 길이가 2자 이하라면, new_id의 마지막 문자를 new_id의 길이가 3이 될 때까지 반복해서 끝에 붙입니다.
+
+# new_id="...!@BaT#*..y.abcdefghijklm"
+# def solution(new_id):
+#     #1
+#     new_id = new_id.lower()
+#     #2
+#     for i in new_id:
+#         if i.isalsum():
+#             string +=i
+#         elif i in ['_','_','_']:
+#             string += i
+#         else:
+#             pass
+#
+#     #3
+#     while '..' in string:
+#         string=string.replace('..','.')
+#     #4
+#     string=string.strip('.')
+#     print(string)
+#     #5
+#     if len(string) >=16:
+#         string =string[:15]
+#         if string[-1] == '.':
+#             string = string[:-1]
+#     #7
+#     while len (string) < 3:
+#         string += string[-1]
+#
+#     return string
+
+
+
+
+def solution(id_list,report,k):
+    #1.누가 신고했는지 확인
+    answer= []
+    report = list(set(report))#집합 값이 없는 자료형
+
+    report_user ={} #{신고당한 사람:[신고한 사람]}
+    result = [0]*len(id_list)
+    for string in report:
+        user, target = string.split() #user = 신고자, target =신고 당한 사람
+        if target not in report_user.keys():
+            report_user[target]= [user]
+        else:
+            report_user[target].append(user)#딕셔너리에 신고당한 사람의 이름이 있으면 value에 있는 리트에 추가
+            print(result)
+
+    for target in id_list:
+        #신고 당한 사람을 신고 결과에서 찾고, 그안에 신고 한 사람의 수가 k를 넘을때
+        if target in report_user.keys() and len(report_user[target])>= k:
+            for user in report_user[target]:
+                print(user)
+                result[id_list.index(user)]+=1
+
+
+
+
+
+    #2. 신고를 당한 횟수가 k를 초과하는지 확인
+
+    #3.k번 이상 신고를 당한 사람을 신고한 사람에게 메일을 전송
+
+    #4.id_list의 순서대로 메일을 받은 횟수를 배열로 정렬후 return
+
+    return result
+
+
+
+id_list = ["muzi", "frodo", "apeach", "neo"]
+report = ["muzi frodo","apeach frodo","frodo neo","muzi neo","apeach muzi"]
+k=2
+print(solution(id_list,report,k))
